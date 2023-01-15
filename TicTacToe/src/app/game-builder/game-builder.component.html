@@ -1,0 +1,22 @@
+<div class="content">
+    <div *ngIf="!startNewGame">
+        <button *ngIf="(userService.userInGame$ | async) === true">CONTINUE GAME</button>
+        <button (click)="newGameClicked()">START NEW GAME</button>
+    </div>
+
+    <div *ngIf="startNewGame">
+        <button (click)="singlePlayerClicked()">SINGLEPLAYER</button>
+        <button>MULTIPLAYER</button>
+        <button>AI</button>
+    </div>
+
+    <div *ngIf="showGameBuilderTemplate">
+        <h4>ENTER GAME SIZE</h4>
+        <input type="number" [(ngModel)]="gameSize">
+        <h4>ENTER GAME DIFFICULTY</h4>
+        <input type="number" [(ngModel)]="gameDifficulty">
+        <h4>CHOOSE OPPONENTS COUNT</h4>
+        <input type="number" [(ngModel)]="gameOpponents">
+        <button (click)="startNewGameClicked()">START GAME</button>
+    </div>
+</div>
