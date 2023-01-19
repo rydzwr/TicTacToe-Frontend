@@ -1,17 +1,19 @@
-<!-- <div class="content">
-    <div>
-        <div *ngFor="let message of messages"><strong>{{ message.from }}: </strong> {{ message.text }}</div>
+<div class="content">
+  <h1>{{ currentPlayerMove }} TURN</h1>
+  <div class="grid-container">
+    <div *ngFor="let row of gameSizeArray" style="display: flex">
+      <div *ngFor="let column of gameSizeArray">
+        <button
+          style="width: 50px; height: 50px"
+          (click)="cellClicked(row, column)"
+        >
+          {{ gameState[row * gameSizeArray.length + column] }}
+        </button>
+      </div>
     </div>
-    <div>
-        <input type="text" #data>
-        <button (click)="send(data.value)"></button>
-    </div> 
-</div> -->
-
-<div class="grid-container">
-    <div *ngFor="let row of gameSizeArray" style="display: flex;">
-        <div *ngFor="let column of gameSizeArray">
-            <button style="width: 50px;height:50px;" (click)="cellClicked(row, column)">{{ gameState[row * gameSizeArray.length + column] }}</button>
-        </div>
-    </div>
+  </div>
+  <div *ngIf="finishedGame === 'FINISHED'"></div>
+  <h1>GAME OVER</h1>
+  <br />
+  <h3>WINNER {{ winnerPawn }}</h3>
 </div>

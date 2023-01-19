@@ -9,7 +9,7 @@ import { UserAuthService } from './user-auth.service';
 export class UserService {
   public isUserInGameSubject: BehaviorSubject<boolean>;
 
-  public getisUserInGame() {
+  public getIsUserInGame() {
       return this.isUserInGameSubject.getValue();
   }
 
@@ -20,7 +20,7 @@ export class UserService {
   constructor(private http: HttpClient,
     public auth: UserAuthService,
     @Inject('SERVER_URL') private url: String
-  ) { 
+  ) {
     this.isUserInGameSubject = new BehaviorSubject(false);
   }
 

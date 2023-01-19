@@ -1,13 +1,13 @@
 <div class="content">
     <div *ngIf="!startNewGame">
-        <button *ngIf="(userService.userInGame$ | async) === true">CONTINUE GAME</button>
+        <button (click)="continueGameClicked()" *ngIf="(userService.userInGame$ | async) === true">CONTINUE GAME</button>
         <button (click)="newGameClicked()">START NEW GAME</button>
     </div>
 
-    <div *ngIf="startNewGame">
-        <button (click)="singlePlayerClicked()">SINGLEPLAYER</button>
-        <button>MULTIPLAYER</button>
-        <button>AI</button>
+    <div *ngIf="startNewGame && !showGameBuilderTemplate" class="content">
+        <button (click)="singlePlayerClicked()">LOCAL PLAYERS</button>
+        <br>
+        <button>ONLINE PLAYERS</button>
     </div>
 
     <div *ngIf="showGameBuilderTemplate">
