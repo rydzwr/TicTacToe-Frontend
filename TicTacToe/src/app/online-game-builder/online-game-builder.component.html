@@ -1,0 +1,38 @@
+<div class="content">
+  <div class="content" *ngIf="!startNewGame">
+    <button (click)="joinGameClicked()">JOIN GAME</button>
+    <br>
+    <button (click)="newGameClicked()">START NEW GAME</button>
+  </div>
+
+
+  <div *ngIf="startNewGame">
+    <h4>ENTER GAME SIZE</h4>
+    <button (click)="decrementGameSize()"> <</button>
+    {{ gameSize }}
+    <button (click)="incrementGameSize()"> ></button>
+    <br>
+    <br>
+    <h4>ENTER GAME DIFFICULTY</h4>
+    <button (click)="decrementGameDifficulty()"> <</button>
+    {{ gameDifficulty }}
+    <button (click)="incrementGameDifficulty()"> ></button>
+    <br>
+    <br>
+    <h4>CHOOSE OPPONENTS</h4>
+    <br>
+    <h4>LOCAL</h4>
+    <button (click)="decrementOnlineOpponentsCount()"> <</button>
+    {{ gameOnlineOpponents }}
+    <button (click)="incrementOnlineOpponentsCount()"> ></button>
+    <br>
+    <br>
+    <h4>AI</h4>
+    <button (click)="decrementAIOpponentsCount()"> <</button>
+    {{ gameAIOpponents }}
+    <button (click)="incrementAIOpponentsCount()"> ></button>
+    <br>
+    <br>
+    <button (click)="startNewGameClicked()">START GAME</button>
+  </div>
+</div>

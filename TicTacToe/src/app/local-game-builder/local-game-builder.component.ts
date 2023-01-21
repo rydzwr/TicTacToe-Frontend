@@ -1,31 +1,21 @@
-import {Component} from '@angular/core';
-import {Router} from '@angular/router';
-import {GameBuilderService} from '../service/game-builder.service';
-import {UserService} from '../service/user.service';
-import {PlayerDto} from "../model/PlayerDto";
+import { Component } from '@angular/core';
+import {UserService} from "../service/user.service";
+import {Router} from "@angular/router";
+import {GameBuilderService} from "../service/game-builder.service";
 
 @Component({
-  selector: 'app-game-builder',
-  templateUrl: './game-builder.component.html',
-  styleUrls: ['./game-builder.component.scss'],
+  selector: 'app-local-game-builder',
+  templateUrl: './local-game-builder.component.html',
+  styleUrls: ['./local-game-builder.component.css']
 })
-export class GameBuilderComponent {
+export class LocalGameBuilderComponent {
   public gameSize: number;
   public gameDifficulty: number;
   public gameLocalOpponents: number;
   public gameAIOpponents: number;
-  public gameOnlineOpponents: number;
 
   // HTML STATUSES
   public startNewGame: boolean = false;
-
-  public onlineGameTypeChoose: boolean = false;
-  public localGameTypeChoose: boolean = false;
-
-  public localGameType: boolean = false;
-  public onlineGameType: boolean = false;
-
-  public readyPlayersArray: any = [];
 
   constructor(
     public userService: UserService,
@@ -33,18 +23,20 @@ export class GameBuilderComponent {
     public gameBuilderService: GameBuilderService
   ) {
     // RANDOM GAME PROPERTIES SHOWN IN HTML
+
     this.gameSize = 10;
     this.gameDifficulty = 6;
     this.gameLocalOpponents = 3;
     this.gameAIOpponents = 3;
-    this.gameOnlineOpponents = 3;
   }
 
   ngOnInit(): void {
     this.userService.canResumeGame();
   }
 
-  // CHECKING IF PLAYER CAN RESUME GAME
+  public newGameClicked() {
+    this.startNewGame = true;
+  }
 
   public continueGameClicked() {
     this.gameBuilderService.continueGame().subscribe((res) => {
@@ -54,9 +46,7 @@ export class GameBuilderComponent {
     });
   }
 
-  // BUILDING REQUEST FOR NEW LOCAL GAME
-
-  public startNewLocalGameClicked() {
+  public startNewGameClicked() {
 
     const players: any = [];
 
@@ -86,44 +76,6 @@ export class GameBuilderComponent {
       });
   }
 
-  // JOINING ONLINE GAME
-
-  public joinOnlineGameClicked() {
-
-  }
-
-  public createNewOnlineGameClicked() {
-
-  }
-
-  // BUILDING REQUEST FOR NEW ONLINE GAME
-
-  public startNewOnlineGameClicked() {
-    const players: any = [];
-
-    for (let i = 0; i < this.gameAIOpponents; i++) {
-      players.push({
-        playerType: "ONLINE"
-      });
-    }
-
-    this.gameBuilderService.buildGame(this.gameSize, this.gameDifficulty, players).subscribe(() => {
-      this._router.navigate(['lobby']);
-    });
-  }
-
-  public newGameClicked() {
-    this.startNewGame = true;
-  }
-
-  public singlePlayerClicked() {
-    this._router.navigate(['local-game-builder']);
-  }
-
-  public onlinePlayersClicked() {
-    this._router.navigate(['online-game-builder']);
-  }
-
   // ----------------- GAME SIZE -----------------------
 
   public incrementGameSize() {
@@ -136,7 +88,7 @@ export class GameBuilderComponent {
     }
   }
 
-  // ----------------- PLAYER DIFFICULTY -----------------------
+  // ----------------- GAME DIFFICULTY -----------------------
 
   public incrementGameDifficulty() {
     this.gameDifficulty++;
@@ -160,18 +112,6 @@ export class GameBuilderComponent {
     }
   }
 
-  // ----------------- ONLINE OPPONENTS COUNT -----------------------
-
-  public incrementOnlineOpponentsCount() {
-    this.gameOnlineOpponents++;
-  }
-
-  public decrementOnlineOpponentsCount() {
-    if (this.gameOnlineOpponents > 1) {
-      this.gameOnlineOpponents--;
-    }
-  }
-
   // ----------------- AI OPPONENTS COUNT -----------------------
 
   public incrementAIOpponentsCount() {
@@ -184,4 +124,3 @@ export class GameBuilderComponent {
     }
   }
 }
-

@@ -26,21 +26,19 @@ export class GameBuilderService {
     return this.loadedPrevGameSubject.asObservable();
   }
 
-  public buildGame(gameSize: number, gameDifficulty: number, gameOpponents: number): Observable<boolean> {
-
-    const players: any = [];
-    for (let i = 0; i < gameOpponents; i++) {
-      players.push({
-        playerType: "LOCAL",
-        playerPawn: `${i}`
-      });
-    }
+  public buildGame(gameSize: number, gameDifficulty: number, gameOpponents: [] ): Observable<boolean> {
 
     const body: any = {
       gameSize: gameSize,
       gameDifficulty: gameDifficulty,
-      players: players
+      players: gameOpponents
     }
+
+    console.log("BUILDING GAME WITH DATA: --> ");
+    console.log("GAME SIZE: --> " + body.gameSize);
+    console.log("GAME DIFFICULTY: --> " + body.gameDifficulty);
+    console.log("GAME DTO: --> ");
+    console.log(body)
 
     return this.http.post<boolean>(`${this.url}/api/game/createGame`, body, {
       withCredentials: true,
@@ -51,6 +49,13 @@ export class GameBuilderService {
   public continueGame(): Observable<LoadGameDto> {
     console.log("GAME BUILDER --> CONTINUE GAME");
     return this.http.get<LoadGameDto>(`${this.url}/api/game/continueGame`, {
+      withCredentials: true,
+      headers: this.auth.authHeader,
+    });
+  }
+
+  public getInviteCode() {
+    return this.http.get<string>(`${this.url}/api/game/inviteCode`, {
       withCredentials: true,
       headers: this.auth.authHeader,
     });

@@ -1,11 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {GameBuilderComponent} from '../game-builder/game-builder.component';
 import {UserAuthService} from '../service/user-auth.service';
 import {WebSocketClient} from '../service/WebSocketApi';
 import {LoadGameDto} from "../model/LoadGameDto";
-import {GameBuilderService} from "../service/game-builder.service";
-import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-game',
@@ -21,25 +18,16 @@ export class GameComponent implements OnInit {
   public gameState: string;
   public currentPlayerMove: string;
 
-  public finishedGame: string;
+  public finishedGame: boolean;
   public winnerPawn: string;
 
   private gameSize: number;
 
   constructor(
     private _auth: UserAuthService,
-    private router: Router,
-    private gameBuilderService: GameBuilderService
+    private router: Router
   ) {
     const gameState = this.router.getCurrentNavigation()?.extras.state as LoadGameDto;
-
-    /*if (continueGameClicked) {
-      console.log("CONTINUE GAME CLICKED")
-      this.gameSize = gameBuilderService.getLoadedPrevGameSubject().gameSize;
-      console.log("GAME SIZE FROM PREV GAME SUBJECT: --> ", + this.gameSize)
-    } else {
-      this.gameSize = this.router.getCurrentNavigation()?.extras.state?.['gameSize'];
-    }*/
 
     if (!gameState) {
       throw new Error('No gameState route data!');
@@ -50,7 +38,7 @@ export class GameComponent implements OnInit {
     this.gameState = gameState.gameState ?? '-'.repeat(this.gameSize ** 2);
 
     this.currentPlayerMove = gameState.currentPlayerMove ?? '';
-    this.finishedGame = '';
+    this.finishedGame = false;
     this.winnerPawn = '';
   }
 
@@ -65,8 +53,11 @@ export class GameComponent implements OnInit {
 
 
     this.wsClient.topic$('/topic/gameState').subscribe((m: any) => {
+      console.log("AFTER FINISHED GAME --> GOT DATA: --> " + m.gameState);
+      console.log("AFTER FINISHED GAME --> GOT DATA: --> " + m.winnerPawn);
       if (m.gameState === 'FINISHED') {
-        this.finishedGame = m.gameState;
+        console.log("____________--------------------------------____________")
+        this.finishedGame = true;
         this.winnerPawn = m.winnerPawn;
       }
     });
