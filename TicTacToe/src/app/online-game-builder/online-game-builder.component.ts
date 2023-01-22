@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {Router} from "@angular/router";
 import {GameBuilderService} from "../service/game-builder.service";
 
@@ -15,13 +15,13 @@ export class OnlineGameBuilderComponent {
 
   // HTML STATUSES
   public startNewGame: boolean = false;
+  public joinGameStatus: boolean = false;
 
   constructor(
     private _router: Router,
     public gameBuilderService: GameBuilderService
   ) {
     // RANDOM GAME PROPERTIES SHOWN IN HTML
-
     this.gameSize = 10;
     this.gameDifficulty = 6;
     this.gameOnlineOpponents = 3;
@@ -33,11 +33,21 @@ export class OnlineGameBuilderComponent {
   }
 
   public joinGameClicked() {
-    // JOINING GAME LOGIC
+    this.joinGameStatus = true;
   }
 
   public newGameClicked() {
     this.startNewGame = true;
+  }
+
+  public processJoin(inviteCode: string) {
+    this.gameBuilderService.joinOnlineGame(inviteCode).subscribe((res) => {
+      const newGameDto = {
+        gameSize: res.gameSize,
+        pawn: res.pawn
+      };
+      this._router.navigate(['lobby'], {state: newGameDto});
+    });
   }
 
   public startNewGameClicked() {
@@ -62,9 +72,10 @@ export class OnlineGameBuilderComponent {
         this.gameDifficulty,
         players
       )
-      .subscribe(() => {
+      .subscribe((res) => {
         const newGameDto = {
-          gameSize: this.gameSize
+          gameSize: this.gameSize,
+          pawn: res.pawn
         };
         this._router.navigate(['lobby'], {state: newGameDto});
       });

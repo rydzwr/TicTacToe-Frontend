@@ -5,6 +5,12 @@
     <button (click)="newGameClicked()">START NEW GAME</button>
   </div>
 
+  <div>
+    <input type="text" value="" #inviteCode />
+    <br>
+    <button (click)="processJoin(inviteCode.value)">JOIN</button>
+  </div>
+
 
   <div *ngIf="startNewGame">
     <h4>ENTER GAME SIZE</h4>

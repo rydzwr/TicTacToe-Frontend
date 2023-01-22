@@ -14,6 +14,7 @@ export class AwaitingPlayersLobbyComponent implements OnInit {
   public inviteCode: string;
   public emptyGameSlots: number;
   public gameSize: number;
+  public pawn: string;
 
   private _refreshInterval = interval(4000);
 
@@ -21,7 +22,10 @@ export class AwaitingPlayersLobbyComponent implements OnInit {
     this.inviteCode = "";
     this.emptyGameSlots = 1;
 
-    this._refreshInterval.subscribe((val) => this.getEmptyGameSlots());
+    if (this.emptyGameSlots != 0) {
+      this._refreshInterval.subscribe((val) => this.getEmptyGameSlots());
+    }
+
     const gameState = this.router.getCurrentNavigation()?.extras.state as LoadGameDto;
 
     if (!gameState) {
@@ -29,6 +33,7 @@ export class AwaitingPlayersLobbyComponent implements OnInit {
     }
 
     this.gameSize = gameState.gameSize;
+    this.pawn = gameState.pawn;
   }
 
 
@@ -46,7 +51,8 @@ export class AwaitingPlayersLobbyComponent implements OnInit {
     })
 
     const newGameDto = {
-      gameSize: this.gameSize
+      gameSize: this.gameSize,
+      pawn: this.pawn
     };
 
     if (this.emptyGameSlots == 0) {

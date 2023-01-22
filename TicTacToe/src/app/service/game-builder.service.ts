@@ -9,7 +9,7 @@ import {BehaviorSubject, Observable} from "rxjs";
 })
 export class GameBuilderService {
   public loadedPrevGameSubject: BehaviorSubject<LoadGameDto>;
-  private loadGameDto: LoadGameDto = {gameSize: 0, gameState: "", currentPlayerMove: ""}
+  private loadGameDto: LoadGameDto = {gameSize: 0, gameState: "", currentPlayerMove: "", pawn: ""}
 
   constructor(private http: HttpClient,
               private auth: UserAuthService,
@@ -26,7 +26,7 @@ export class GameBuilderService {
     return this.loadedPrevGameSubject.asObservable();
   }
 
-  public buildGame(gameSize: number, gameDifficulty: number, gameOpponents: [] ): Observable<boolean> {
+  public buildGame(gameSize: number, gameDifficulty: number, gameOpponents: [] ): Observable<LoadGameDto> {
 
     const body: any = {
       gameSize: gameSize,
@@ -40,7 +40,7 @@ export class GameBuilderService {
     console.log("GAME DTO: --> ");
     console.log(body)
 
-    return this.http.post<boolean>(`${this.url}/api/game/createGame`, body, {
+    return this.http.post<LoadGameDto>(`${this.url}/api/game/createGame`, body, {
       withCredentials: true,
       headers: this.auth.authHeader,
     });
@@ -63,6 +63,17 @@ export class GameBuilderService {
 
   public getEmptyGameSlots() {
     return this.http.get<number>(`${this.url}/api/game/emptyGameSlots`, {
+      withCredentials: true,
+      headers: this.auth.authHeader,
+    });
+  }
+
+  public joinOnlineGame(inviteCode: string): Observable<LoadGameDto> {
+    const body: any = {
+      inviteCode: inviteCode,
+    }
+
+    return this.http.post<LoadGameDto>(`${this.url}/api/game/joinGame`, body, {
       withCredentials: true,
       headers: this.auth.authHeader,
     });

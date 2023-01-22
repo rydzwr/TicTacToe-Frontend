@@ -23,6 +23,8 @@ export class GameComponent implements OnInit {
 
   private gameSize: number;
 
+  public pawn: string;
+
   constructor(
     private _auth: UserAuthService,
     private router: Router
@@ -40,6 +42,7 @@ export class GameComponent implements OnInit {
     this.currentPlayerMove = gameState.currentPlayerMove ?? '';
     this.finishedGame = false;
     this.winnerPawn = '';
+    this.pawn = gameState.pawn;
   }
 
   async ngOnInit() {
