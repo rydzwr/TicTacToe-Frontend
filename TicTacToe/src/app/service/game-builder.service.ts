@@ -60,4 +60,11 @@ export class GameBuilderService {
       headers: this.auth.authHeader,
     });
   }
+
+  public getEmptyGameSlots() {
+    return this.http.get<number>(`${this.url}/api/game/emptyGameSlots`, {
+      withCredentials: true,
+      headers: this.auth.authHeader,
+    });
+  }
 }

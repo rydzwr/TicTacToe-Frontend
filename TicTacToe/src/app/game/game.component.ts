@@ -48,15 +48,11 @@ export class GameComponent implements OnInit {
     this.wsClient.topic$('/topic/gameBoard').subscribe((m: any) => {
       this.gameState = m.gameState;
       this.currentPlayerMove = m.currentPlayerMove;
-      console.log('Current Player Move: --> ' + this.currentPlayerMove);
     });
 
 
     this.wsClient.topic$('/topic/gameState').subscribe((m: any) => {
-      console.log("AFTER FINISHED GAME --> GOT DATA: --> " + m.gameState);
-      console.log("AFTER FINISHED GAME --> GOT DATA: --> " + m.winnerPawn);
       if (m.gameState === 'FINISHED') {
-        console.log("____________--------------------------------____________")
         this.finishedGame = true;
         this.winnerPawn = m.winnerPawn;
       }

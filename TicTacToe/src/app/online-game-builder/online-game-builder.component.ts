@@ -50,7 +50,7 @@ export class OnlineGameBuilderComponent {
       });
     }
 
-    for (let i = 0; i < this.gameOnlineOpponents; i++) {
+    for (let i = 0; i < this.gameOnlineOpponents + 1; i++) {
       players.push({
         playerType: "ONLINE"
       });
