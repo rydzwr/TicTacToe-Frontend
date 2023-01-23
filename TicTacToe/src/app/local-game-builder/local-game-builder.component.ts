@@ -42,7 +42,7 @@ export class LocalGameBuilderComponent {
     this.gameBuilderService.continueGame().subscribe((res) => {
       console.log("Continue game returned:");
       console.log(res);
-      this._router.navigate(['game'], {state: res});
+      this._router.navigate(['play'], {state: res});
     });
   }
 
@@ -68,11 +68,10 @@ export class LocalGameBuilderComponent {
         this.gameDifficulty,
         players
       )
-      .subscribe(() => {
-        const newGameDto = {
-          gameSize: this.gameSize
-        };
-        this._router.navigate(['game'], {state: newGameDto});
+      .subscribe((gameData) => {
+        console.log("GF");
+        console.log(gameData);
+        this._router.navigate(['play'], {state: gameData });
       });
   }
 

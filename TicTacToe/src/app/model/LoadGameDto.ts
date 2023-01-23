@@ -1,6 +1,8 @@
 export interface LoadGameDto {
-  gameState?: string;
-  currentPlayerMove?: string;
-  pawn: string
-  gameSize: number;
+  state: string;
+  board: string;
+  currentPlayerMove: string;
+  difficulty: number;
+  playerPawn: string
+  size: number;
 }

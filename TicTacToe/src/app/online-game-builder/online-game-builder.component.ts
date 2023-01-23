@@ -42,11 +42,7 @@ export class OnlineGameBuilderComponent {
 
   public processJoin(inviteCode: string) {
     this.gameBuilderService.joinOnlineGame(inviteCode).subscribe((res) => {
-      const newGameDto = {
-        gameSize: res.gameSize,
-        pawn: res.pawn
-      };
-      this._router.navigate(['lobby'], {state: newGameDto});
+      this._router.navigate(['play'], {state: res});
     });
   }
 
@@ -73,11 +69,7 @@ export class OnlineGameBuilderComponent {
         players
       )
       .subscribe((res) => {
-        const newGameDto = {
-          gameSize: this.gameSize,
-          pawn: res.pawn
-        };
-        this._router.navigate(['lobby'], {state: newGameDto});
+        this._router.navigate(['play'], {state: res});
       });
   }
 

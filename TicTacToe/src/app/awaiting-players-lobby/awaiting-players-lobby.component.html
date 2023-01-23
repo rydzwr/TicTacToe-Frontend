@@ -10,8 +10,8 @@
   <h1>...</h1>
   <br>
   <br>
-  <h1>Left : {{ emptyGameSlots }}</h1>
+  <h1>Left : {{ gameService.awaitingPlayers$ | async }}</h1>
   <br>
   <br>
-  <h1>Your Pawn: {{ pawn }}</h1>
+  <h1>Your Pawn: {{ gameService.playerPawn }}</h1>
 </div>

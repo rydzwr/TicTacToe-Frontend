@@ -50,67 +50,10 @@ export class GameBuilderComponent {
     this.gameBuilderService.continueGame().subscribe((res) => {
       console.log("Continue game returned:");
       console.log(res);
-      this._router.navigate(['game'], {state: res});
+      this._router.navigate(['play'], {state: res});
     });
   }
 
-  // BUILDING REQUEST FOR NEW LOCAL GAME
-
-  public startNewLocalGameClicked() {
-
-    const players: any = [];
-
-    for (let i = 0; i < this.gameAIOpponents; i++) {
-      players.push({
-        playerType: "AI"
-      });
-    }
-
-    for (let i = 0; i < this.gameLocalOpponents; i++) {
-      players.push({
-        playerType: "LOCAL"
-      });
-    }
-
-    this.gameBuilderService
-      .buildGame(
-        this.gameSize,
-        this.gameDifficulty,
-        players
-      )
-      .subscribe(() => {
-        const newGameDto = {
-          gameSize: this.gameSize
-        };
-        this._router.navigate(['game'], {state: newGameDto});
-      });
-  }
-
-  // JOINING ONLINE GAME
-
-  public joinOnlineGameClicked() {
-
-  }
-
-  public createNewOnlineGameClicked() {
-
-  }
-
-  // BUILDING REQUEST FOR NEW ONLINE GAME
-
-  public startNewOnlineGameClicked() {
-    const players: any = [];
-
-    for (let i = 0; i < this.gameAIOpponents; i++) {
-      players.push({
-        playerType: "ONLINE"
-      });
-    }
-
-    this.gameBuilderService.buildGame(this.gameSize, this.gameDifficulty, players).subscribe(() => {
-      this._router.navigate(['lobby']);
-    });
-  }
 
   public newGameClicked() {
     this.startNewGame = true;

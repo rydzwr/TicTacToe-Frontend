@@ -12,9 +12,11 @@ import { GameComponent } from './game/game.component';
 import { AwaitingPlayersLobbyComponent } from './awaiting-players-lobby/awaiting-players-lobby.component';
 import { LocalGameBuilderComponent } from './local-game-builder/local-game-builder.component';
 import { OnlineGameBuilderComponent } from './online-game-builder/online-game-builder.component';
+import { GameParentComponent } from './game-parent/game-parent.component';
+import { GameSummaryComponent } from './game-summary/game-summary.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, GameBuilderComponent, GameComponent, AwaitingPlayersLobbyComponent, LocalGameBuilderComponent, OnlineGameBuilderComponent],
+  declarations: [AppComponent, LoginComponent, GameBuilderComponent, GameComponent, AwaitingPlayersLobbyComponent, LocalGameBuilderComponent, OnlineGameBuilderComponent, GameParentComponent, GameSummaryComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule,  NgbModule, FormsModule ],
   providers: [{ provide: 'SERVER_URL', useValue: 'http://localhost:8080' }],
   bootstrap: [AppComponent],

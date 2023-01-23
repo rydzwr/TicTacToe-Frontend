@@ -3,6 +3,7 @@ import {GameBuilderService} from "../service/game-builder.service";
 import {Router} from "@angular/router";
 import {interval} from "rxjs";
 import {LoadGameDto} from "../model/LoadGameDto";
+import {GameService} from "../service/game.service";
 
 @Component({
   selector: 'app-awaiting-players-lobby',
@@ -13,50 +14,38 @@ import {LoadGameDto} from "../model/LoadGameDto";
 export class AwaitingPlayersLobbyComponent implements OnInit {
   public inviteCode: string;
   public emptyGameSlots: number;
-  public gameSize: number;
-  public pawn: string;
+ // public gameSize: number;
+ // public pawn: string;
 
-  private _refreshInterval = interval(4000);
+  //private _refreshSubscription;
 
-  constructor(private gameBuilderService: GameBuilderService,private router: Router) {
+  constructor(private gameBuilderService: GameBuilderService,private router: Router, public gameService: GameService) {
     this.inviteCode = "";
     this.emptyGameSlots = 1;
 
-    if (this.emptyGameSlots != 0) {
-      this._refreshInterval.subscribe((val) => this.getEmptyGameSlots());
-    }
+    //if (this.emptyGameSlots != 0) {
+    //  this._refreshSubscription = interval(4000).pipe().subscribe((val) => this.getEmptyGameSlots());
+    //}
 
-    const gameState = this.router.getCurrentNavigation()?.extras.state as LoadGameDto;
+   // const gameState = this.router.getCurrentNavigation()?.extras.state as LoadGameDto;
 
-    if (!gameState) {
-      throw new Error('No gameState route data!');
-    }
+   // if (!gameState) {
+   //   throw new Error('No gameState route data!');
+   // }
 
-    this.gameSize = gameState.gameSize;
-    this.pawn = gameState.pawn;
+   // this.gameSize = gameState.size;
+   // this.pawn = gameState.playerPawn;
   }
-
 
   ngOnInit(): void {
     this.gameBuilderService.getInviteCode().subscribe((res) => {
       console.log(res);
       this.inviteCode = res;
     });
-  }
 
-  private getEmptyGameSlots() {
     this.gameBuilderService.getEmptyGameSlots().subscribe((res) => {
       console.log(res);
       this.emptyGameSlots = res;
-    })
-
-    const newGameDto = {
-      gameSize: this.gameSize,
-      pawn: this.pawn
-    };
-
-    if (this.emptyGameSlots == 0) {
-      this.router.navigate(['game'], {state: newGameDto});
-    }
+    });
   }
 }

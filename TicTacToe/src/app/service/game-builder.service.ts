@@ -8,22 +8,9 @@ import {BehaviorSubject, Observable} from "rxjs";
   providedIn: 'root'
 })
 export class GameBuilderService {
-  public loadedPrevGameSubject: BehaviorSubject<LoadGameDto>;
-  private loadGameDto: LoadGameDto = {gameSize: 0, gameState: "", currentPlayerMove: "", pawn: ""}
-
   constructor(private http: HttpClient,
               private auth: UserAuthService,
               @Inject('SERVER_URL') private url: String) {
-
-    this.loadedPrevGameSubject = new BehaviorSubject(this.loadGameDto);
-  }
-
-  public getLoadedPrevGameSubject() {
-    return this.loadedPrevGameSubject.getValue();
-  }
-
-  public get loadedPrevGameSubject$(): Observable<LoadGameDto> {
-    return this.loadedPrevGameSubject.asObservable();
   }
 
   public buildGame(gameSize: number, gameDifficulty: number, gameOpponents: [] ): Observable<LoadGameDto> {
