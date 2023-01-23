@@ -106,7 +106,7 @@ export class LocalGameBuilderComponent {
   }
 
   public decrementLocalOpponentsCount() {
-    if (this.gameLocalOpponents > 1) {
+    if (this.gameLocalOpponents > 0) {
       this.gameLocalOpponents--;
     }
   }

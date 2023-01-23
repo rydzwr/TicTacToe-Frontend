@@ -1,9 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {GameBuilderService} from "../service/game-builder.service";
-import {Router} from "@angular/router";
-import {interval} from "rxjs";
-import {LoadGameDto} from "../model/LoadGameDto";
+import {Component} from '@angular/core';
 import {GameService} from "../service/game.service";
+import {GameBuilderService} from "../service/game-builder.service";
+import {interval, takeUntil, takeWhile} from "rxjs";
 
 @Component({
   selector: 'app-awaiting-players-lobby',
@@ -11,30 +9,28 @@ import {GameService} from "../service/game.service";
   styleUrls: ['./awaiting-players-lobby.component.scss']
 })
 
-export class AwaitingPlayersLobbyComponent implements OnInit {
+export class AwaitingPlayersLobbyComponent {
   public inviteCode: string;
   public emptyGameSlots: number;
- // public gameSize: number;
- // public pawn: string;
+  public yourPawn: string;
 
-  //private _refreshSubscription;
+  private _refreshInterval = interval(400);
 
-  constructor(private gameBuilderService: GameBuilderService,private router: Router, public gameService: GameService) {
+  constructor(public gameService: GameService, private gameBuilderService: GameBuilderService) {
     this.inviteCode = "";
     this.emptyGameSlots = 1;
+    this.yourPawn = "";
 
-    //if (this.emptyGameSlots != 0) {
-    //  this._refreshSubscription = interval(4000).pipe().subscribe((val) => this.getEmptyGameSlots());
-    //}
+    this.gameService.awaitingPlayers$.subscribe((res) => {
+      console.log("AWAITING PLAYERS COUNT: --> " + res);
+      this.emptyGameSlots = res;
+    })
 
-   // const gameState = this.router.getCurrentNavigation()?.extras.state as LoadGameDto;
-
-   // if (!gameState) {
-   //   throw new Error('No gameState route data!');
-   // }
-
-   // this.gameSize = gameState.size;
-   // this.pawn = gameState.playerPawn;
+    this.yourPawn = this.gameService.playerPawn;
+    this._refreshInterval.subscribe((val) => this.gameBuilderService.getEmptyGameSlots().subscribe((res) => {
+      console.log(res);
+      this.emptyGameSlots = res;
+    }));
   }
 
   ngOnInit(): void {

@@ -3,6 +3,7 @@ import {WebSocketClient} from "./WebSocketApi";
 import {UserAuthService} from "./user-auth.service";
 import {BehaviorSubject, EMPTY, empty, Observable, of} from "rxjs";
 import {LoadGameDto} from "../model/LoadGameDto";
+import {GameBuilderService} from "./game-builder.service";
 
 @Injectable()
 export class GameService {
@@ -72,7 +73,7 @@ export class GameService {
     'ws://localhost:8080/game?token=' + this._auth.accessToken
   );
 
-  constructor(private _auth: UserAuthService) { }
+  constructor(private _auth: UserAuthService, private gameBuilderService: GameBuilderService) { }
 
   public async startGame(gameData: LoadGameDto) {
     if (!gameData) {
@@ -96,12 +97,10 @@ export class GameService {
     this._gameState$ = this.wsClient.topic$("/topic/gameState");
     this._gameBoard$ = this.wsClient.topic$("/topic/gameBoard");
     this._gameError$ = this.wsClient.topic$("/topic/gameError");
-    this._awaitingPlayers$ = this.wsClient.topic$("/topic/awaitingPlayers");
+    this._awaitingPlayers$ = this.gameBuilderService.getEmptyGameSlots();
 
     this._gameBoard$.subscribe((m: any) => {
-      console.log("GB sub");
-      console.log(m);
-      this._gameBoardSubject.next(m.gameBoard); // TODO: REPLACE ANY WITH INTERFACE AND CHANGE GAMESTATE TO BOARD IN SPRING
+      this._gameBoardSubject.next(m.gameBoard); // TODO: REPLACE ANY WITH INTERFACE AND CHANGE GAME STATE TO BOARD IN SPRING
       this._currentPlayerSubject.next(m.currentPlayerMove);
     });
 
