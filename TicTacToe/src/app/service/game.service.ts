@@ -5,8 +5,16 @@ import {BehaviorSubject, EMPTY, empty, Observable, of} from "rxjs";
 import {LoadGameDto} from "../model/LoadGameDto";
 import {GameBuilderService} from "./game-builder.service";
 
+interface GameResult {
+  result: string;
+  winnerPawn?: string;
+}
+
 @Injectable()
 export class GameService {
+
+  //#region Getters
+
   public get gameBoard$() {
     return this._gameBoardSubject.asObservable();
   }
@@ -17,6 +25,14 @@ export class GameService {
 
   public get currentPlayer$() {
     return this._currentPlayerSubject.asObservable();
+  }
+
+  public get gameResult$() {
+    return this._gameResultSubject.asObservable();
+  }
+
+  public get gameResult() {
+    return this._gameResultSubject.getValue();
   }
 
   public get gameError$() {
@@ -55,6 +71,8 @@ export class GameService {
     return this._awaitingPlayersSubject.getValue();
   }
 
+  //#endregion
+
   private _gameSize: number = 0;
   private _gameDifficulty: number = 0;
   private _playerPawn: string = "";
@@ -67,7 +85,8 @@ export class GameService {
   private _gameBoardSubject = new BehaviorSubject<string>("");
   private _gameStateSubject = new BehaviorSubject<string>("");
   private _currentPlayerSubject = new BehaviorSubject<string>("");
-  private _awaitingPlayersSubject = new BehaviorSubject<number>(0);
+  private _awaitingPlayersSubject = new BehaviorSubject<number>(-1);
+  private _gameResultSubject = new BehaviorSubject<GameResult | null>(null);
 
   private wsClient = new WebSocketClient(
     'ws://localhost:8080/game?token=' + this._auth.accessToken
@@ -89,6 +108,10 @@ export class GameService {
     this._currentPlayerSubject.next(gameData.currentPlayerMove);
     this._gameStateSubject.next(gameData.state);
     this._gameBoardSubject.next(gameData.board);
+
+    if (gameData.awaitingPlayers) {
+      this._awaitingPlayersSubject.next(gameData.awaitingPlayers);
+    }
   }
 
   private async connect() {
@@ -97,14 +120,20 @@ export class GameService {
     this._gameState$ = this.wsClient.topic$("/topic/gameState");
     this._gameBoard$ = this.wsClient.topic$("/topic/gameBoard");
     this._gameError$ = this.wsClient.topic$("/topic/gameError");
-    this._awaitingPlayers$ = this.gameBuilderService.getEmptyGameSlots();
+    this._awaitingPlayers$ = this.wsClient.topic$("/topic/awaitingPlayers");
 
     this._gameBoard$.subscribe((m: any) => {
       this._gameBoardSubject.next(m.gameBoard); // TODO: REPLACE ANY WITH INTERFACE AND CHANGE GAME STATE TO BOARD IN SPRING
       this._currentPlayerSubject.next(m.currentPlayerMove);
     });
 
-    this._gameState$.subscribe((m: any) => this._gameStateSubject.next(m.gameState));
+    this._gameState$.subscribe((m: any) => {
+      if (m.gameState === "FINISHED") {
+        this._gameResultSubject.next(m.gameResult);
+      }
+
+      this._gameStateSubject.next(m.gameState);
+    });
     this._gameError$.subscribe(error => console.log(error));
     this._awaitingPlayers$.subscribe((players) => this._awaitingPlayersSubject.next(players));
   }

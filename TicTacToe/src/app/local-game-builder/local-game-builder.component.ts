@@ -118,7 +118,7 @@ export class LocalGameBuilderComponent {
   }
 
   public decrementAIOpponentsCount() {
-    if (this.gameAIOpponents > 2) {
+    if (this.gameAIOpponents > 0) {
       this.gameAIOpponents--;
     }
   }

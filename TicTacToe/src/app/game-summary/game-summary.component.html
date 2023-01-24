@@ -1,1 +1,2 @@
-<p>game-summary works!</p>
+<p>Game result: {{ (gameService.gameResult$ | async)?.result }}</p>
+<p>Winner pawn: {{ (gameService.gameResult$ | async)?.winnerPawn }}</p>

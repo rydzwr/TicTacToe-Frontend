@@ -5,4 +5,5 @@ export interface LoadGameDto {
   difficulty: number;
   playerPawn: string
   size: number;
+  awaitingPlayers?: number;
 }

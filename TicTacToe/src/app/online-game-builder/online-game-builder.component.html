@@ -1,18 +1,27 @@
 <div class="content">
-  <div class="content" *ngIf="!startNewGame">
+  <div class="content" *ngIf="!startNewGame && !joinGameStatus">
+    <br>
+    <br>
     <button (click)="joinGameClicked()">JOIN GAME</button>
     <br>
     <button (click)="newGameClicked()">START NEW GAME</button>
   </div>
 
-  <div>
-    <input type="text" value="" #inviteCode />
+  <div  *ngIf="joinGameStatus && !startNewGame">
+    <br>
+    <h1>ENTER INVITE CODE</h1>
+    <br>
+    <input class="form-control" type="text" value="" #inviteCode />
+    <br>
+    <br>
     <br>
     <button (click)="processJoin(inviteCode.value)">JOIN</button>
   </div>
 
 
   <div *ngIf="startNewGame">
+    <br>
+    <br>
     <h4>ENTER GAME SIZE</h4>
     <button (click)="decrementGameSize()"> <</button>
     {{ gameSize }}

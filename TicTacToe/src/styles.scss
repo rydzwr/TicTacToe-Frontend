@@ -1,8 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 .content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+html, body {
+  background: gray;
+}

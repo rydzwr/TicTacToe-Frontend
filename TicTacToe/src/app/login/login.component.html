@@ -1,39 +1,33 @@
 <div class="content">
-  <h1>TIC TAC TOE</h1>
-  <h1>GAME</h1>
-  <br>
+  <h1>TIC TAC TOE <br> GAME</h1>
   <h3>LOGIN</h3>
   <p>Enter User Name</p>
-  <input type="text" value="user" #usernameLogin />
+  <input type="text" value="user" #usernameLogin/>
   <p>Enter Password</p>
-  <input type="text" value="user123" #passwordLogin />
-  <br />
+  <input type="text" value="user123" #passwordLogin/>
   <button
     (click)="submitLoginClicked(usernameLogin.value, passwordLogin.value)"
-    class="btn btn-primary"
   >
     LOGIN
   </button>
   <p *ngIf="status === 'invalidCredentials'">Invalid Credentials</p>
   <p *ngIf="status === 'networkErr'">Something went wrong!</p>
   <p *ngIf="status === 'validationErr'">Name or password can not be empty!</p>
-  <br />
   <h3>REGISTER</h3>
   <p>Enter User Name</p>
-  <input type="text" value="user2" #usernameRegister />
+  <input type="text" value="user2" #usernameRegister/>
   <p>Enter Password</p>
-  <input type="text" value="user123" #passwordRegister />
-  <br />
+  <input type="text" value="user123" #passwordRegister/>
+  <br/>
   <button
     (click)="
       submitRegisterClicked(usernameRegister.value, passwordRegister.value)
     "
-    class="btn btn-primary"
   >
     REGISTER
   </button>
   <p *ngIf="status === 'welcome'">
-    Welcome new user! <br />
+    Welcome new user! <br/>
     Now you can log in!
   </p>
   <p *ngIf="status === 'duplicate'">Username already in use!</p>

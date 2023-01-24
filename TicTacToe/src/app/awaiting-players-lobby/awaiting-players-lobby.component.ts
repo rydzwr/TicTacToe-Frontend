@@ -14,23 +14,12 @@ export class AwaitingPlayersLobbyComponent {
   public emptyGameSlots: number;
   public yourPawn: string;
 
-  private _refreshInterval = interval(400);
-
   constructor(public gameService: GameService, private gameBuilderService: GameBuilderService) {
     this.inviteCode = "";
     this.emptyGameSlots = 1;
     this.yourPawn = "";
 
-    this.gameService.awaitingPlayers$.subscribe((res) => {
-      console.log("AWAITING PLAYERS COUNT: --> " + res);
-      this.emptyGameSlots = res;
-    })
-
     this.yourPawn = this.gameService.playerPawn;
-    this._refreshInterval.subscribe((val) => this.gameBuilderService.getEmptyGameSlots().subscribe((res) => {
-      console.log(res);
-      this.emptyGameSlots = res;
-    }));
   }
 
   ngOnInit(): void {
@@ -39,7 +28,7 @@ export class AwaitingPlayersLobbyComponent {
       this.inviteCode = res;
     });
 
-    this.gameBuilderService.getEmptyGameSlots().subscribe((res) => {
+    this.gameService.awaitingPlayers$.subscribe((res) => {
       console.log(res);
       this.emptyGameSlots = res;
     });
