@@ -1,7 +1,6 @@
 
 import { Observable } from 'rxjs';
-import { Client, Stomp } from '@stomp/stompjs';
-import * as SockJS from 'sockjs-client';
+import { Client } from '@stomp/stompjs';
 
 export class WebSocketClient {
   client!: Client;
@@ -28,10 +27,6 @@ export class WebSocketClient {
       };
 
       this.client.onStompError = function (frame) {
-        // Will be invoked in case of error encountered at Broker
-        // Bad login/passcode typically will cause an error
-        // Complaint brokers will set `message` header with a brief message. Body may contain details.
-        // Compliant brokers will terminate the connection after any error
         console.log('Broker reported error: ' + frame.headers['message']);
         console.log('Additional details: ' + frame.body);
       };

@@ -9,10 +9,6 @@ import { UserAuthService } from './user-auth.service';
 export class UserService {
   public isUserInGameSubject: BehaviorSubject<boolean>;
 
-  public getIsUserInGame() {
-      return this.isUserInGameSubject.getValue();
-  }
-
   public get userInGame$(): Observable<boolean> {
     return this.isUserInGameSubject.asObservable();
 }

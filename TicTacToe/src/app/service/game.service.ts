@@ -4,6 +4,7 @@ import {UserAuthService} from "./user-auth.service";
 import {BehaviorSubject, EMPTY, empty, Observable, of} from "rxjs";
 import {LoadGameDto} from "../model/LoadGameDto";
 import {GameBuilderService} from "./game-builder.service";
+import {MoveCoordsDto} from "../model/MoveCoordsDto";
 
 interface GameResult {
   result: string;
@@ -92,7 +93,8 @@ export class GameService {
     'ws://localhost:8080/game?token=' + this._auth.accessToken
   );
 
-  constructor(private _auth: UserAuthService, private gameBuilderService: GameBuilderService) { }
+  constructor(private _auth: UserAuthService) {
+  }
 
   public async startGame(gameData: LoadGameDto) {
     if (!gameData) {
@@ -123,7 +125,13 @@ export class GameService {
     this._awaitingPlayers$ = this.wsClient.topic$("/topic/awaitingPlayers");
 
     this._gameBoard$.subscribe((m: any) => {
-      this._gameBoardSubject.next(m.gameBoard); // TODO: REPLACE ANY WITH INTERFACE AND CHANGE GAME STATE TO BOARD IN SPRING
+      console.log(m);
+      let currentBoard = [...this.gameBoard];
+      for (let i = 0; i < m.processedMovesIndices.length; i++) {
+        currentBoard[m.processedMovesIndices[i]] = m.processedMovesPawns[i];
+      }
+
+      this._gameBoardSubject.next(currentBoard.join(""));
       this._currentPlayerSubject.next(m.currentPlayerMove);
     });
 
@@ -139,10 +147,9 @@ export class GameService {
   }
 
   public async playerMove(row: number, column: number) {
-    const body = {
-      gameBoardElementIndex: (
-        row * this.gameSize + column
-      ).toString(),
+    const body: MoveCoordsDto = {
+      x: row,
+      y: column
     };
 
     this.wsClient.send('/app/gameMove', body);

@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {GameBuilderService} from '../service/game-builder.service';
 import {UserService} from '../service/user.service';
-import {PlayerDto} from "../model/PlayerDto";
 
 @Component({
   selector: 'app-game-builder',
@@ -18,12 +17,6 @@ export class GameBuilderComponent {
 
   // HTML STATUSES
   public startNewGame: boolean = false;
-
-  public onlineGameTypeChoose: boolean = false;
-  public localGameTypeChoose: boolean = false;
-
-  public localGameType: boolean = false;
-  public onlineGameType: boolean = false;
 
   public readyPlayersArray: any = [];
 

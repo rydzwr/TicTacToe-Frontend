@@ -2,7 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Inject, Injectable} from '@angular/core';
 import {LoadGameDto} from '../model/LoadGameDto';
 import {UserAuthService} from './user-auth.service';
-import {BehaviorSubject, Observable} from "rxjs";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'

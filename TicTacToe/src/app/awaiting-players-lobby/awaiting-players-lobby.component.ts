@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {GameService} from "../service/game.service";
 import {GameBuilderService} from "../service/game-builder.service";
-import {interval, takeUntil, takeWhile} from "rxjs";
 
 @Component({
   selector: 'app-awaiting-players-lobby',

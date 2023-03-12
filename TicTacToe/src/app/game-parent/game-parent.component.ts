@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {WebSocketClient} from "../service/WebSocketApi";
 import {GameService} from "../service/game.service";
 import {Router} from "@angular/router";
 import {LoadGameDto} from "../model/LoadGameDto";
@@ -21,9 +20,11 @@ export class GameParentComponent implements OnInit {
     console.log(this.gameData);
     await this._gameService.startGame(this.gameData);
 
-    if (this._gameService.gameState === "AWAITING_PLAYERS") {
+    const gameState = this._gameService.gameState;
+
+    if (gameState === "AWAITING_PLAYERS") {
       await this.router.navigate(['play', 'lobby']);
-    } else if (this._gameService.gameState === "IN_PROGRESS") {
+    } else if (gameState === "IN_PROGRESS") {
       await this.router.navigate(['play', 'game']);
     } else {
       throw new Error("Invalid game state!");
